@@ -17,7 +17,7 @@ st.title("💬 ReubenGPT")
 # openai_api_key = st.text_input("OpenAI API Key", type="password")
 
 if "model" not in st.session_state:
-    genai.configure(api_key = st.secrets["OpenAI_key"])
+    genai.configure(api_key = st.secrets["key"])
     st.session_state.model = genai.GenerativeModel("gemini-1.5-flash")
 
 if "chat_session" not in st.session_state:
