@@ -38,11 +38,15 @@ if "chat_session" not in st.session_state:
 #     # st.text(f'neneneere')
 #     st.write(str(st.session_state.chat_session.history))
 
+user_counter = True
 for message in st.session_state.chat_session.history:
     if message.role == 'model':
         with st.chat_message("ReubenGPT"):
             st.markdown(str(message.parts).split('"')[1])
     elif message.role == 'user':
+        if user_counter:
+            user_counter = False
+            continue
         with st.chat_message("Kaypoh"):
             st.markdown(str(message.parts).split('"')[1])
 
