@@ -33,8 +33,10 @@ if "chat_session" not in st.session_state:
 
 if "convo" not in st.session_state:
     st.session_state.convo = []
-else:
-    st.session_state.convo.append(st.session_state.response.text) 
+with st.chat_message('ReubenGPT'):
+    st.markdown(st.session_state.response.text)
+
+
 
 # with st.chat_message("ReubenGPT"):
 #     # response = st.write_stream(chat_session.history)
