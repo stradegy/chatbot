@@ -63,7 +63,7 @@ if prompt:
     # st.text(f"You kaypoh: {prompt}")
     response = st.session_state.chat_session.send_message(prompt)
     st.session_state.convo.append(response.text)
-    speaker = 'ReubenGPT'
+    speaker = 'Kaypoh'
     for text in st.session_state.convo:
         with st.chat_message(speaker):
             st.markdown(text)
