@@ -17,14 +17,19 @@ st.title("💬 ReubenGPT")
 # openai_api_key = st.text_input("OpenAI API Key", type="password")
 
 if "model" not in st.session_state:
-    genai.configure(api_key = st.secrets["key"])
+    try: 
+        genai.configure(api_key = st.secrets["key"])
+    except:
+        genai.configure(api_key = 'AIzaSyDjWpmStS_C3aNUAG9FcZLooJx9_0vbRic') #to change after commit.here forr easyt tests
     st.session_state.model = genai.GenerativeModel("gemini-1.5-flash")
 
 if "chat_session" not in st.session_state:
     st.session_state.chat_session = st.session_state.model.start_chat(
   history=[])
-    # st.session_state.chat_session.send_message('Do not use any advanced formatting')
-
+    try:
+        st.session_state.chat_session.send_message(st.secrets['initial'])
+    except:
+        st.session_state.chat_session.send_message('Hi')
 
 # with st.chat_message("ReubenGPT"):
 #     # response = st.write_stream(chat_session.history)
@@ -43,8 +48,14 @@ for message in st.session_state.chat_session.history:
 
 prompt = st.chat_input("Simi Daiji")
 if prompt:
-    st.text(f"You kaypoh: {prompt}")
-    st.session_state.chat_session.send_message(prompt)
+    # st.text(f"You kaypoh: {prompt}")
+    response = st.session_state.chat_session.send_message(prompt)
+
+    with st.chat_message("Kaypoh"):
+        st.markdown(prompt)
+
+    with st.chat_message("ReubenGPT"):
+        st.markdown(response.text)
 
 
 
