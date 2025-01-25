@@ -27,9 +27,14 @@ if "chat_session" not in st.session_state:
     st.session_state.chat_session = st.session_state.model.start_chat(
   history=[])
     try:
-        st.session_state.chat_session.send_message(st.secrets['initial'])
+        st.session_state.response = st.session_state.chat_session.send_message(st.secrets['initial'])
     except:
-        st.session_state.chat_session.send_message('Hi')
+        st.session_state.response = st.session_state.chat_session.send_message('Hi')
+
+if "convo" not in st.session_state:
+    st.session_state.convo = []
+else:
+    st.session_state.convo.append(st.session_state.response.text) 
 
 # with st.chat_message("ReubenGPT"):
 #     # response = st.write_stream(chat_session.history)
@@ -38,29 +43,34 @@ if "chat_session" not in st.session_state:
 #     # st.text(f'neneneere')
 #     st.write(str(st.session_state.chat_session.history))
 
-user_counter = True
-for message in st.session_state.chat_session.history:
-    if message.role == 'model':
-        with st.chat_message("ReubenGPT"):
-            st.markdown(str(message.parts).split('"')[1])
-    elif message.role == 'user':
-        if user_counter:
-            user_counter = False
-            continue
-        with st.chat_message("Kaypoh"):
-            st.markdown(str(message.parts).split('"')[1])
+# user_counter = True
+# for message in st.session_state.chat_session.history:
+#     if message.role == 'model':
+#         with st.chat_message("ReubenGPT"):
+#             st.markdown(str(message.parts).split('"')[1])
+#     elif message.role == 'user':
+#         if user_counter:
+#             user_counter = False
+#             continue
+#         with st.chat_message("Kaypoh"):
+#             st.markdown(str(message.parts).split('"')[1])
 
 prompt = st.chat_input("Simi Daiji")
 if prompt:
+    st.session_state.convo.append(prompt)
     # st.text(f"You kaypoh: {prompt}")
     response = st.session_state.chat_session.send_message(prompt)
-
-    with st.chat_message("Kaypoh"):
-        st.markdown(prompt)
-
-    with st.chat_message("ReubenGPT"):
-        st.markdown(response.text)
-
+    st.session_state.convo.append(response.text)
+    speaker = 'ReubenGPT'
+    for text in st.session_state.convo:
+        with st.chat_message(speaker):
+            st.markdown(text)
+        if speaker == 'ReubenGPT' : 
+            speaker = 'Kaypoh'
+            continue
+        if speaker == 'Kaypoh' : 
+            speaker = 'ReubenGPT'
+            continue
 
 
 # if not openai_api_key:
