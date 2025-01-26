@@ -6,6 +6,9 @@ from openai import OpenAI
 # Show title and description.
 st.title("ReubenGPT 🤖💬 ")
 
+with st.chat_message('ReubenGPT', avatar = '🤖'):
+    st.markdown("Hi, I am ReubenGPT, Reuben's slave. This is not an actual bot. We are a team of 3 actual people working in 8-hour shifts hoping that Reuben will notice us and make us his girlfriends. What do you want to kaypoh about.")
+
 if "model" not in st.session_state:
     try: 
         genai.configure(api_key = st.secrets["key"])
